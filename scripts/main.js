@@ -1,7 +1,9 @@
-'use strict';
+(function () {
+	'use strict';
 
-import ResumeView from './resumeView.js';
+	const ResumeView = window.ResumeView;
+	const resumeView = new ResumeView();
 
-const resumeView = new ResumeView();
+})();
 
 
