@@ -34,14 +34,15 @@ export default class MenuView {
 		this.menu.appendChild(this.about);
 		this.menu.appendChild(this.project);
 		this.menu.appendChild(this.skills);
-		console.log('make Menu');
 	}
 
 	menuClick(elem) {
 		elem.classList.add('current');
 		this.currentItem.classList.remove('current');
 		this.currentItem = elem;
-		this.bus.emit('menuClick', this.returnNumberMenu(this.currentItem));
+		let number = this.returnNumberMenu(this.currentItem);
+		if (number)
+			this.bus.emit('menuClick', number);
 	}
 
 	returnNumberMenu(elem) {
@@ -54,6 +55,8 @@ export default class MenuView {
 				return 3;
 			case 'ПРОФЕССИОНАЛЬНЫЕ НАВЫКИ':
 				return 4;
+			default:
+				return false;
 		}
 	}
 

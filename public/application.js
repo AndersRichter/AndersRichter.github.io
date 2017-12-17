@@ -70,57 +70,18 @@
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
-/**
- * Модуль, предоставляющий интерфейс для работы с событиями
- * @module EventBus
- */
 
 /* harmony default export */ __webpack_exports__["default"] = (new class EventBus {
 	constructor() {
 		this.listeners = {};
 	}
 
-	/**
-  * Подписывает на собтые
-  * @param {string} event - название события
-  * @param {function} listener - функция вызываемая при наступлении события
-  */
 	on(event, listener) {
 		this.listeners[event] = this.listeners[event] || [];
 		this.listeners[event].push(listener);
 		return listener;
 	}
 
-	/**
-  * Отписывается от события
-  * @param {string} event - название события
-  * @param {Object} listener - название события
-  */
-	remove(event, listener) {
-		this.listeners[event] = this.listeners[event] || [];
-		const idx = this.listeners[event].indexOf(listener);
-		if (idx !== -1) {
-			delete this.listeners[event][idx];
-		}
-		if (!this.listeners[event].length) {
-			delete this.listeners[event];
-		}
-	}
-
-	/**
-  * Отписывается от события
-  * @param {string} event - название события
-  */
-	off(event) {
-		this.listeners[event] = this.listeners[event] || [];
-		delete this.listeners[event];
-	}
-
-	/**
-  * Вызывает событие
-  * @param {string} event - название события
-  * @param {object} data - аргументы фунции, которая вызывается при наступлниея события
-  */
 	emit(event, data) {
 		this.listeners[event].forEach(listener => {
 			listener(data);
@@ -209,14 +170,14 @@ class MenuView {
 		this.menu.appendChild(this.about);
 		this.menu.appendChild(this.project);
 		this.menu.appendChild(this.skills);
-		console.log('make Menu');
 	}
 
 	menuClick(elem) {
 		elem.classList.add('current');
 		this.currentItem.classList.remove('current');
 		this.currentItem = elem;
-		this.bus.emit('menuClick', this.returnNumberMenu(this.currentItem));
+		let number = this.returnNumberMenu(this.currentItem);
+		if (number) this.bus.emit('menuClick', number);
 	}
 
 	returnNumberMenu(elem) {
@@ -229,6 +190,8 @@ class MenuView {
 				return 3;
 			case 'ПРОФЕССИОНАЛЬНЫЕ НАВЫКИ':
 				return 4;
+			default:
+				return false;
 		}
 	}
 
@@ -253,18 +216,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 class ContentView {
 	constructor() {
 		this.content = document.createElement('div');
-		this.content.className = 'slider';
+		this.content.className = 'content';
 
 		this.bus = __WEBPACK_IMPORTED_MODULE_0__modules_eventBus__["default"];
 		this.currentElem = 1;
 
-		this.width = 1000;
-		this.height = 500;
-		this.i = 4;
-		this.offset = this.i * this.height;
-		this.i--;
-
 		this.makeContent();
+		this.slideContent();
 	}
 
 	makeContent() {
@@ -275,15 +233,14 @@ class ContentView {
 		this.slide4 = document.createElement('div');
 
 		this.slides.classList.add('slides');
-		this.slide1.classList.add('slide1');
-		this.slide2.classList.add('slide2');
-		this.slide3.classList.add('slide3');
-		this.slide4.classList.add('slide4');
+		this.slide1.classList.add('slide1', 'slide');
+		this.slide2.classList.add('slide2', 'slide');
+		this.slide3.classList.add('slide3', 'slide');
+		this.slide4.classList.add('slide4', 'slide');
 
-		this.slide1.classList.add('slide');
-		this.slide2.classList.add('slide');
-		this.slide3.classList.add('slide');
-		this.slide4.classList.add('slide');
+		this.makeSlide2();
+		this.makeSlide3();
+		this.makeSlide4();
 
 		this.slides.appendChild(this.slide1);
 		this.slides.appendChild(this.slide2);
@@ -291,18 +248,60 @@ class ContentView {
 		this.slides.appendChild(this.slide4);
 
 		this.content.appendChild(this.slides);
+	}
 
+	slideContent() {
+		this.slideCount = 4;
+		this.offset = this.slideCount-- * this.height;
 		this.slides.setAttribute('height', this.offset);
 		this.offset = 0;
 
-		this.bus.on('menuClick', a => {
+		this.bus.on('menuClick', numberMenu => {
 			this.height = this.content.offsetHeight;
-			this.offset += this.height * (a - this.currentElem);
+			this.offset += this.height * (numberMenu - this.currentElem);
 			this.slides.style.transform = 'translateY(-' + `${this.offset}` + 'px)';
-			this.currentElem = a;
+			this.currentElem = numberMenu;
+			if (this.currentElem === 3) {
+				setTimeout(this._blur.bind(this), 1100);
+			} else {
+				this.un_Blur();
+			}
 		});
+	}
 
-		console.log('make Content');
+	makeSlide2() {
+		this.aboutInfo = document.createElement('div');
+		this.aboutInfo.classList.add('slide2_about');
+		this.aboutInfo.innerHTML = "<p>Мир не стоит на месте, и сейчас как никогда требуются специалисты, которые способны идти в ногу со временем. Мы уже не можем представить свою жизнь без огромного количества визуальной информации, которая поступает к нам отовсюду. Поэтому я твердо решил стать frontend разработчиком, и связать с программированием свою жизнь.</p>" + "<hr class='slide2_hr'>" + "<p>Сейчас я учусь на 4 курсе кафедры ИУ4. Планирую поступать в магистратуру. Но не смотря на занятость в университете, готов посвящать стажировке 20-26 часов в неделю, так как понимаю, что это бесценный опыт, который так мне сейчас необходим.</p>" + "<hr class='slide2_hr'>" + "<p>Моими преимуществами как сотрудника можно назвать невероятную целеустремленность, умение всецело отдаваться поставленным задачам, коммуникабельность и дипломатичность, желание постоянно узнавать что-то новое и стремление к профессиональному развитию.</p>" + "<hr class='slide2_hr'>" + "<p>Серьезно увлекаться программированием я начал на открытых курсах Технопарка по С/С++. Уже тогда я понял, что это именно то, чем я хочу заниматься и что мне интересно. Затем я поступил на основную программу Технопарка и сейчас учусь на втором семестре.</p>";
+
+		this.slide2.appendChild(this.aboutInfo);
+	}
+
+	makeSlide3() {
+		this.project = document.createElement('div');
+		this.project.classList.add('slide3_project');
+		this.project.setAttribute('hidden', 'true');
+		this.project.innerHTML = "<p>Space Traveler: космическая игра-аркада, итоговый проект на открытых курсах по С/С++. Игроку предстоит пролететь сквозь пояс астероидов, не разбив свой космический корабль.</p><br>" + "<a href='https://github.com/AndersRichter/Space-Traveler'>GitHub Repositorie</a>" + "<br><hr class='slide2_hr'><br>" + "<p>Gardians Game: пошаговая настольная 3D игра в стиле фильма Стражи галактики. Играя за персонажей фильма нужно захватить как можно больше фигур противника.</p><br>" + "<a href='https://github.com/AndersRichter/2017_2_Chunk'>GitHub Repositorie</a>";
+
+		this.blure = document.createElement('div');
+		this.blure.classList.add('slide3_blur');
+
+		this.slide3.appendChild(this.project);
+		this.slide3.appendChild(this.blure);
+	}
+
+	_blur() {
+		this.blure.style.filter = 'blur(10px)';
+		this.project.removeAttribute('hidden');
+	}
+
+	un_Blur() {
+		this.project.setAttribute('hidden', 'true');
+		this.blure.style.filter = 'blur(0px)';
+	}
+
+	makeSlide4() {
+		this.slide4.innerHTML = "<p class='slide4_text'>Hello</p>";
 	}
 
 	returnContent() {
@@ -348,7 +347,6 @@ class FooterView {
 		this.contacts.appendChild(this.vk);
 
 		this.footer.appendChild(this.contacts);
-		console.log('make Menu');
 	}
 
 	returnFooter() {

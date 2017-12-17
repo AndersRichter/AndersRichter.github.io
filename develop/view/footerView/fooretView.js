@@ -28,7 +28,6 @@ export default class FooterView {
 		this.contacts.appendChild(this.vk);
 
 		this.footer.appendChild(this.contacts);
-		console.log('make Menu');
 	}
 
 	returnFooter() {

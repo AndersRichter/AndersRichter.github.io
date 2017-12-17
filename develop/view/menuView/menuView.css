@@ -34,7 +34,7 @@
 }
 
 .menu-main .current text, .menu-main text:hover{
-    color: #feb386;
+    color: #fe9363;
     cursor: pointer;
 }
 
@@ -46,7 +46,7 @@
     right: 50%;
     bottom: -5px;
     left: 50%;
-    background: #feb386;
+    background: #fe9363;
     transition: .6s;
 }
 
