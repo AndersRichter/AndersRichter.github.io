@@ -1,0 +1,59 @@
+.menu-main {
+    border: 1px solid #606060;
+    margin: 0;
+    padding: 20px 0 5px;
+    text-align: center;
+    background: white;
+}
+
+.menu-main li {
+    display: inline-block;
+}
+
+.menu-main li:after, .first:before {
+    content: "|";
+    color: #606060;
+    vertical-align: top;
+}
+
+.menu-main text {
+    text-decoration: none;
+    font-family: 'Ubuntu Condensed', sans-serif;
+    letter-spacing: 2px;
+    position: relative;
+    padding-bottom: 20px;
+    margin: 0 34px 0 30px;
+    font-size: 17px;
+    text-transform: uppercase;
+    display: inline-block;
+    transition: color .6s;
+}
+
+.menu-main text {
+    color: #606060;
+}
+
+.menu-main .current text, .menu-main text:hover{
+    color: #feb386;
+    cursor: pointer;
+}
+
+.menu-main text:before, .menu-main text:after {
+    content: "";
+    position: absolute;
+    height: 4px;
+    top: auto;
+    right: 50%;
+    bottom: -5px;
+    left: 50%;
+    background: #feb386;
+    transition: .6s;
+}
+
+.menu-main text:hover:before, .menu-main .current:before {
+    left: 0;
+}
+
+.menu-main text:hover:after, .menu-main .current:after {
+    right: 0;
+}
