@@ -1,6 +1,7 @@
 'use strict';
 
 import EventBus from '../../modules/eventBus';
+import skillsRang from './skillsField.js';
 
 export default class ContentView {
 	constructor() {
@@ -102,8 +103,27 @@ export default class ContentView {
 	}
 
 	makeSlide4() {
-		this.slide4.innerHTML =
-			"<p class='slide4_text'>Hello</p>";
+		this.skills = document.createElement('div');
+		this.skills.classList.add('slide4_skills');
+		this.table = document.createElement('table');
+		this.table.classList.add('slide4_table');
+		this.createTable();
+
+		this.slide4.appendChild(this.skills);
+	}
+
+	createTable() {
+		skillsRang.skillsRang.forEach((key) => {
+			console.log(key.skill);
+			console.log(key.rang);
+			let tr = document.createElement('tr');
+			tr.innerHTML =
+				"<td>" + `${key.skill}` + "</td>" +
+				"<td>" + '<progress max='+'10'+' value='+`${+key.rang}`+'>' + "</td>";
+			this.table.appendChild(tr);
+		});
+
+		this.skills.appendChild(this.table);
 	}
 
 	returnContent() {

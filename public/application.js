@@ -209,6 +209,8 @@ class MenuView {
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_eventBus__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__skillsField_js__ = __webpack_require__(28);
+
 
 
 
@@ -301,7 +303,25 @@ class ContentView {
 	}
 
 	makeSlide4() {
-		this.slide4.innerHTML = "<p class='slide4_text'>Hello</p>";
+		this.skills = document.createElement('div');
+		this.skills.classList.add('slide4_skills');
+		this.table = document.createElement('table');
+		this.table.classList.add('slide4_table');
+		this.createTable();
+
+		this.slide4.appendChild(this.skills);
+	}
+
+	createTable() {
+		__WEBPACK_IMPORTED_MODULE_1__skillsField_js__["default"].skillsRang.forEach(key => {
+			console.log(key.skill);
+			console.log(key.rang);
+			let tr = document.createElement('tr');
+			tr.innerHTML = "<td>" + `${key.skill}` + "</td>" + "<td>" + '<progress max=' + '10' + ' value=' + `${+key.rang}` + '>' + "</td>";
+			this.table.appendChild(tr);
+		});
+
+		this.skills.appendChild(this.table);
 	}
 
 	returnContent() {
@@ -378,6 +398,7 @@ var map = {
 	"./main/main.js": 7,
 	"./modules/eventBus.js": 0,
 	"./view/contentView/contentView.js": 3,
+	"./view/contentView/skillsField.js": 28,
 	"./view/footerView/fooretView.js": 4,
 	"./view/menuView/menuView.js": 2,
 	"./view/resumeView/resumeView.js": 1
@@ -467,6 +488,59 @@ webpackContext.id = 8;
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 14 */,
+/* 15 */,
+/* 16 */,
+/* 17 */,
+/* 18 */,
+/* 19 */,
+/* 20 */,
+/* 21 */,
+/* 22 */,
+/* 23 */,
+/* 24 */,
+/* 25 */,
+/* 26 */,
+/* 27 */,
+/* 28 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+
+
+const skillsRang = [{
+	skill: 'JavaScript (Three.js)',
+	rang: 10
+}, {
+	skill: 'HTML',
+	rang: 10
+}, {
+	skill: 'CSS',
+	rang: 10
+}, {
+	skill: 'C++ (Boost, SFML, STL)',
+	rang: 8
+}, {
+	skill: 'CSS',
+	rang: 7
+}, {
+	skill: 'Git',
+	rang: 7
+}, {
+	skill: 'СУБД PostgresSQL',
+	rang: 5
+}, {
+	skill: 'Python (Django)',
+	rang: 3
+}, {
+	skill: 'Java (Spring)',
+	rang: 3
+}];
+
+/* harmony default export */ __webpack_exports__["default"] = ({ skillsRang });
 
 /***/ })
 /******/ ]);
